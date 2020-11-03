@@ -3,6 +3,7 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 public class SnakeGui extends JFrame {
+    // changes
     private int width = 370, height = 380;
     private Snake s;
     boolean fieldPainted = false;
