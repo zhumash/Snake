@@ -3,7 +3,6 @@ import java.awt.event.*;
 import javax.swing.*;
 import java.util.*;
 public class SnakeGui extends JFrame {
-    // changes
     private int width = 370, height = 380;
     private Snake s;
     boolean fieldPainted = false;
@@ -12,14 +11,14 @@ public class SnakeGui extends JFrame {
     private Color fieldColor =new Color(40, 225, 225);
     private Color foodColor = Color.RED;
     private Color snakeColor =  new Color(33, 226, 52);
+    int score = 0;
     public SnakeGui(){
         super("Snake");
         this.setBounds(400,200,width,height);
-        s = new Snake(7,7, blocksW, blocksH);
+        s = new Snake(8,8, blocksW, blocksH);
         f = new Food(s, blocksW, blocksH);
         KeyListener kl = new KeyListener() {
             public void keyTyped(KeyEvent e) {
-                System.out.println(e);
                 if(e.getKeyChar() == 'w'){
                     s.changeDir(0, -1);
                 }else if(e.getKeyChar() == 'a') {
@@ -43,21 +42,30 @@ public class SnakeGui extends JFrame {
         s.start();
     }
     public void paint(Graphics g) {
-//        g.clearRect(0, 0, 2000, 2000);
-
+        if(s.checkColision()) {
+            stopGame();
+        }
+        s.showCoordinates();
         clearSnake(g);
+//        System.out.println("ok1");
         if(fieldPainted == false) {
             buildField(g);
             fieldPainted = true;
         }
 
         drawFood(f, g);
+//        System.out.println("ok2");
         drawSnake(g);
+//        System.out.println("ok3");
+
+
         if(f.checkColition(s)) {
+            ++score;
             drawBlock(f.x, f.y,g, fieldColor);
             s.eat();
             f.next(s);
         }
+//        System.out.println("ok4");
         try {
             Thread.sleep(50);
         }catch (Exception e) {
@@ -65,12 +73,28 @@ public class SnakeGui extends JFrame {
         }
         repaint();
     }
+    private void stopGame() {
+        s.interrupt();
+
+        JOptionPane p = new JOptionPane();
+        p.showMessageDialog(this, "You Lost you score is: " + score);
+        while(p.isShowing());
+        restartGame();
+    }
+    void restartGame() {
+        s = new Snake(8, 8, 15, 15);
+        f = new Food(s, 15,15);
+        fieldPainted = false;
+        score = 0;
+        s.start();
+    }
     public void clearSnake(Graphics g) {
         for(Point p : drawed) {
             Graphics2D g2 = (Graphics2D) g;
             g2.setColor(fieldColor);
             g2.fillRect(p.x * (blocksize + 1)+ startx, p.y * (blocksize + 1)+ starty, blocksize , blocksize);
         }
+        drawed.clear();
     }
     int blocksize = 20;
     int startx = 25;
@@ -82,11 +106,9 @@ public class SnakeGui extends JFrame {
 
     }
     private void  drawSnake(Graphics g) {
-        drawed.clear();
         for(int x = 0; x < blocksW; ++x) {
             for(int y = 0; y < blocksH; ++y) {
                 if(s.isSnakeHere(x, y)) {
-
                     drawed.add(new Point(x, y));
                     drawBlock(x, y, g, snakeColor);
                 }
