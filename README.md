@@ -1,6 +1,6 @@
 todos:
 
-    0)score,
+    0)score, (procesing)
     1)auto,
     2)authorization
 bugs:

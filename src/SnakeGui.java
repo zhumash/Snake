@@ -11,6 +11,7 @@ public class SnakeGui extends JFrame {
     private Color fieldColor =new Color(40, 225, 225);
     private Color foodColor = Color.RED;
     private Color snakeColor =  new Color(33, 226, 52);
+    StatisticsWriter stat = new StatisticsWriter("C:\\Users\\ЖАНДОС\\Desktop\\JavaCode\\Snake\\src\\resources\\records.txt");
     int score = 0;
     public SnakeGui(){
         super("Snake");
@@ -77,7 +78,8 @@ public class SnakeGui extends JFrame {
         s.interrupt();
 
         JOptionPane p = new JOptionPane();
-        p.showMessageDialog(this, "You Lost you score is: " + score);
+
+        p.showMessageDialog(this, "You Lost you score is: " + score + stat.getStatistics() );
         while(p.isShowing());
         restartGame();
     }
