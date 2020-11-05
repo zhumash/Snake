@@ -46,7 +46,7 @@ public class SnakeGui extends JFrame {
         if(s.checkColision()) {
             stopGame();
         }
-        s.showCoordinates();
+//        s.showCoordinates();
         clearSnake(g);
 //        System.out.println("ok1");
         if(fieldPainted == false) {
@@ -75,10 +75,10 @@ public class SnakeGui extends JFrame {
         repaint();
     }
     private void stopGame() {
+
         s.interrupt();
-
         JOptionPane p = new JOptionPane();
-
+        stat.addStats(Main.userName, score);
         p.showMessageDialog(this, "You Lost you score is: " + score + stat.getStatistics() );
         while(p.isShowing());
         restartGame();

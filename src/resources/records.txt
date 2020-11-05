@@ -1,2 +1,2 @@
-Zhandos 10
-Name 13
+Zhandos 5
+login 20
